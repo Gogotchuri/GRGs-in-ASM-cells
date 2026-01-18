@@ -1,0 +1,17 @@
+# Data (Very large files)
+data/raw/
+data/reference/
+
+# Keep directory structure
+!data/raw/.gitkeep
+!data/reference/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
