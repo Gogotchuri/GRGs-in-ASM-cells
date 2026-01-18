@@ -1,0 +1,20 @@
+# conda environment description file for bioinf-grg package
+name: bioinf-grg
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  # Core Python
+  - python=3.11
+  - pip
+
+  # Data acquisition
+  - sra-tools>=3.0  # fasterq-dump for FASTQ download
+  - wget            # reference genome download
+
+  # Python analysis stack
+  - pandas>=2.0
+
+  # Utilities
+  - pigz            # parallel gzip compression

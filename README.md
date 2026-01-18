@@ -26,4 +26,19 @@ This study separates **pipeline effects** from **reference genome effects**:
 - **Part 2 vs Part 1**: Effect of updated genome assembly and annotation
 - **Part 2 vs Original**: Combined modernization effect
 
+## Scripts
+The scripts will be organized and enumerated under `scripts/`
 
+### Environment setup
+I am using the `environment.yml` file for dependency declaration environment setup with conda.
+```bash
+conda env create -f environment.yml
+conda activate bioinf-grg
+```
+
+### Data Gathering automation
+Data gathering is automated with `scripts/01_download_data.py` using. Simply running the script will download all the data required for the analysis.
+Configuration for the data to be used is in `config/samples_table.tsv` and `config/configuration.py`.
+Reference genomes are downloaded using `wget` from the datasets of [EMBL's European Bioinformatics Institute](https://ebi.ac.uk) and placed under `data/reference/{hg19|hg38}`.
+Fasta files are downloaded using `fasterq-dump` from SRA and for compression using `pigz`. Fasta files are placed under `data/raw/`.
+Git simply doesn't allow files of such a size to be uploaded, so they are ignored in `.gitignore`.
