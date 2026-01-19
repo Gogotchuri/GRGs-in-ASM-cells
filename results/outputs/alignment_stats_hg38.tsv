@@ -1,0 +1,9 @@
+sample_id	        input_reads	unique_mapped_pct	multi_mapped_pct	total_mapped_pct
+N61311_untreated	22935521	93.35	            4.13	            97.48
+N61311_dex	        21155707	92.44	            3.89	            96.33
+N052611_untreated	28136282	94.5	            3.63	            98.13
+N052611_dex	        16823088	94.27	            3.49	            97.76
+N080611_untreated	27298970	93.98	            3.8  	            97.78
+N080611_dex	        34298260	94.66	            3.47	            98.13
+N061011_untreated	21275888	94.27	            3.59	            97.86
+N061011_dex	        23487860	94.09	            3.55	            97.64
