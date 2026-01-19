@@ -16,5 +16,8 @@ dependencies:
   # Python analysis stack
   - pandas>=2.0
 
+  # Alignment
+  - star>=2.7.10    # STAR aligner
+
   # Utilities
   - pigz            # parallel gzip compression
