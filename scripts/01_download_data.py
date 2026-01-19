@@ -5,11 +5,8 @@ Download FASTQ files from SRA and reference genomes.
 
 import subprocess
 import pandas as pd
-from pathlib import Path
 
-import sys
-sys.path.insert(0, str(Path(__file__).parent.parent / "config"))
-from analysis_config import HG19_CONFIG, HG38_CONFIG, ROOT
+from configuration import HG19_CONFIG, HG38_CONFIG, ROOT
 
 CONFIG = ROOT / "config"
 

@@ -3,7 +3,7 @@
 ## Background
 ** This is a replication study of the 2014 paper [RNA-Seq Transcriptome Profiling Identifies CRISPLD2 as a Glucocorticoid Responsive Gene that Modulates Cytokine Function in Airway Smooth Muscle Cells (by Blanca E. Himes and Xiaofeng Jiang )](https://doi.org/10.1371/journal.pone.0099625) **
 
-I have tried to modernize the pipeline of the paper and try to reproduce the results with modern tools.
+I modernized the bioinformatics pipeline (STAR/featureCounts/DESeq2) to test whether the original biological conclusions are robust to methodological improvements.
 I hope to verify the results of the study, and in the second part of the study, I will try to run the analysis on the most recent reference Human Genome HG38 (Instead of HG19)
 
 ## Dataset
@@ -15,11 +15,11 @@ The samples are listed in config/samples_table.tsv, four donors, two conditions.
 ## Two-Part Analysis Design
 This study separates **pipeline effects** from **reference genome effects**:
 
-| Analysis     | Reference | Pipeline         | Purpose                      |
-|--------------|-----------|------------------|------------------------------|
-| **Original** | hg19      | TopHat/Cufflinks | Baseline (2014)              |
-| **Part 1**   | hg19      | STAR/DESeq2      | Isolate pipeline improvement |
-| **Part 2**   | hg38      | STAR/DESeq2      | Full modernization           |
+| Analysis     | Reference | Pipeline                   | Purpose                      |
+|--------------|-----------|----------------------------|------------------------------|
+| **Original** | hg19      | TopHat/Cufflinks+Cuffdiff  | Baseline (2014)              |
+| **Part 1**   | hg19      | STAR/featureCount + DESeq2 | Isolate pipeline improvement |
+| **Part 2**   | hg38      | STAR/featureCount + DESeq2 | Full modernization           |
 
 ### Expected Insights
 - **Part 1 vs Original**: Effect of modern aligner (STAR) and DE method (DESeq2)

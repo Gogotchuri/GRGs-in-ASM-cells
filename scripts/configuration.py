@@ -31,6 +31,11 @@ class ReferenceConfig:
 	def gtf_file(self) -> Path:
 		return self.output_dir / "annotation.gtf.gz"
 
+	@property
+	def star_index(self) -> Path:
+		return self.output_dir / "star_index"
+
+
 HG19_CONFIG = ReferenceConfig(
 	name="hg19",
 	version="GRCh37",
@@ -47,3 +52,57 @@ HG38_CONFIG = ReferenceConfig(
 	gtf_url="https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/gencode.v44.primary_assembly.annotation.gtf.gz",
 	output_dir=ROOT / "data" / "reference" / "hg38",
 )
+
+@dataclass
+class AnalysisConfig:
+	"""Analysis run configuration."""
+	part: int
+	reference: ReferenceConfig
+	output_suffix: str
+	description: str
+
+	@property
+	def bam_dir(self) -> Path:
+		return ROOT / "data" / "processed" / f"bam_{self.reference.name}"
+
+	@property
+	def counts_dir(self) -> Path:
+		return ROOT / "data" / "processed" / f"counts_{self.reference.name}"
+
+	@property
+	def results_dir(self) -> Path:
+		return ROOT / "results" / self.reference.name
+
+
+# Analysis configurations
+PART1_CONFIG = AnalysisConfig(
+	part=1,
+	reference=HG19_CONFIG,
+	output_suffix="hg19",
+	description="Part 1: hg19",
+)
+
+PART2_CONFIG = AnalysisConfig(
+	part=2,
+	reference=HG38_CONFIG,
+	output_suffix="hg38",
+	description="Part 2: hg38",
+)
+
+
+def get_config(part: int) -> AnalysisConfig:
+	"""Get configuration for the specified analysis part."""
+	if part == 1:
+		return PART1_CONFIG
+	elif part == 2:
+		return PART2_CONFIG
+	else:
+		raise ValueError(f"Invalid part: {part}. Must be 1 or 2.")
+
+
+# Pipeline parameters
+STAR_PARAMS = {
+	"threads": 16,
+	"sjdb_overhang": 62,  # read_length - 1
+	"out_sam_type": "BAM SortedByCoordinate", # For featureCount
+}
