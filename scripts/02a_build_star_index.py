@@ -8,17 +8,8 @@ Usage:
 
 from pathlib import Path
 import argparse
-from configuration import get_config, STAR_PARAMS, ROOT
+from configuration import get_config, STAR_PARAMS, decompress_if_needed
 import subprocess
-
-def decompress_if_needed(gz_file: Path) -> Path:
-	"""Decompress .gz file if uncompressed version doesn't exist yet."""
-	uncompressed = gz_file.with_suffix("")
-	if not uncompressed.exists() and gz_file.exists():
-		print(f"  Decompressing {gz_file.name}...")
-		subprocess.run(["gunzip", "-k", str(gz_file)], check=True)
-	return uncompressed
-
 
 def build_star_index(config) -> None:
 	"""Build STAR genome index."""

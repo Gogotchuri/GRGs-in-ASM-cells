@@ -11,6 +11,7 @@ This is the current reference genome and pipeline, the results should be more ac
 
 from pathlib import Path
 from dataclasses import dataclass
+import subprocess
 
 ROOT = Path(__file__).parent.parent
 
@@ -99,10 +100,23 @@ def get_config(part: int) -> AnalysisConfig:
 	else:
 		raise ValueError(f"Invalid part: {part}. Must be 1 or 2.")
 
+def decompress_if_needed(gz_file: Path) -> Path:
+	"""Decompress .gz file if uncompressed version doesn't exist yet."""
+	uncompressed = gz_file.with_suffix("")
+	if not uncompressed.exists() and gz_file.exists():
+		print(f"Decompressing {gz_file.name}...")
+		subprocess.run(["gunzip", "-k", str(gz_file)], check=True)
+	return uncompressed
 
 # Pipeline parameters
 STAR_PARAMS = {
 	"threads": 16,
 	"sjdb_overhang": 62,  # read_length - 1
 	"out_sam_type": "BAM SortedByCoordinate", # For featureCount
+}
+
+FEATURECOUNTS_PARAMS = {
+	"threads": 16,
+	"feature_type": "exon",
+	"attribute": "gene_id",
 }
