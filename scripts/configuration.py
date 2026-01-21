@@ -56,7 +56,7 @@ HG38_CONFIG = ReferenceConfig(
 
 @dataclass
 class AnalysisConfig:
-	"""Analysis run configuration."""
+	"""Analysis run configuration. Separates files for each analysis part. Under designamted genome directories."""
 	part: int
 	reference: ReferenceConfig
 	output_suffix: str
@@ -73,6 +73,26 @@ class AnalysisConfig:
 	@property
 	def results_dir(self) -> Path:
 		return ROOT / "results" / self.reference.name
+
+	@property
+	def results_tables_dir(self) -> Path:
+		return self.results_dir / "tables"
+
+	@property
+	def results_figures_dir(self) -> Path:
+		return self.results_dir / "figures"
+
+	@property
+	def deseq2_results_file(self) -> Path:
+		return self.results_tables_dir / "deseq2_results.csv"
+
+	@property
+	def top_deseq2_results_file(self) -> Path:
+		return self.results_tables_dir / "top_results_from_deseq2.csv"
+
+	@property
+	def validated_genes_file(self) -> Path:
+		return self.results_tables_dir / "validated_genes.csv"
 
 
 # Analysis configurations

@@ -1,0 +1,15 @@
+Status	N61311_untreated.Aligned.sortedByCoord.out.bam	N61311_dex.Aligned.sortedByCoord.out.bam	N052611_untreated.Aligned.sortedByCoord.out.bam	N052611_dex.Aligned.sortedByCoord.out.bam	N080611_untreated.Aligned.sortedByCoord.out.bam	N080611_dex.Aligned.sortedByCoord.out.bam	N061011_untreated.Aligned.sortedByCoord.out.bam	N061011_dex.Aligned.sortedByCoord.out.bam
+Assigned	19154412	17520605	23841224	14321956	22919647	29122587	17955676	19955821
+Unassigned_Unmapped	579592	777273	527070	376797	606058	639876	456367	554132
+Unassigned_Read_Type	0	0	0	0	0	0	0	0
+Unassigned_Singleton	0	0	0	0	0	0	0	0
+Unassigned_MappingQuality	0	0	0	0	0	0	0	0
+Unassigned_Chimera	0	0	0	0	0	0	0	0
+Unassigned_FragmentLength	0	0	0	0	0	0	0	0
+Unassigned_Duplicate	0	0	0	0	0	0	0	0
+Unassigned_MultiMapping	2914352	2306801	2967254	1685065	3076445	3489322	2201694	2609103
+Unassigned_Secondary	0	0	0	0	0	0	0	0
+Unassigned_NonSplit	0	0	0	0	0	0	0	0
+Unassigned_NoFeatures	887576	796625	1143214	582178	1159741	1396552	889403	839321
+Unassigned_Overlapping_Length	0	0	0	0	0	0	0	0
+Unassigned_Ambiguity	1367376	1238502	1603601	954654	1575560	1947683	1211041	1304285
