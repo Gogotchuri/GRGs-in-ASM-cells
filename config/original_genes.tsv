@@ -1,4 +1,4 @@
-gene_name	Dex FPKM	Untreated FPKM	Ln[Fold Change]	stat	P-Value	padj	Locus
+gene_name	Dex FPKM	Untreated FPKM	log2FoldChange	stat	P-Value	padj	Locus
 C7	38.41	3.76	-3.35	8.74	0	0	chr5:40909598-40983042
 CCDC69	47.39	6.24	-2.92	8.61	0	0	chr5:150560612-150603654
 DUSP1	144.96	18.26	-2.99	8.99	0	0	chr5:172195092-172198203

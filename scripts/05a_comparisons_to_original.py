@@ -4,7 +4,7 @@ from configuration import CONFIG_DIR
 from utilities import get_config_based_on_args
 
 def load_original_genes() -> pd.DataFrame:
-	return pd.read_csv(CONFIG_DIR / "modified_original_genes.tsv", sep="\t")
+	return pd.read_csv(CONFIG_DIR / "original_genes.tsv", sep="\t")
 
 def load_top_deseq2_results(config) -> pd.DataFrame:
 	return pd.read_csv(config.top_deseq2_results_file)

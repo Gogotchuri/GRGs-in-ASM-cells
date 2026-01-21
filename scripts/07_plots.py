@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from scipy import stats
 
-from utilities import get_config, load_deseq2_results, load_top_deseq2_results, load_original_genes, CONFIG_DIR
+from utilities import get_config, load_deseq2_results, load_top_deseq2_results, load_original_genes
 
 def plot_gene_comparison(original_genes, h19_genes, h38_genes, output_file):
 	"""Bar plot comparing fold changes across analyses."""
@@ -112,7 +112,7 @@ def plot_volcano_comparison(results_list: list[pd.DataFrame], titles, output_fil
 
 def main():
 	# Volcano plots
-	original_results = load_original_genes()
+	original_results = load_original_genes().rename(columns={"Ln[Fold Change]": "log2FoldChange"})
 	hg19_config = get_config(1)
 	hg38_config = get_config(2)
 	hg19_results = load_top_deseq2_results(hg19_config)

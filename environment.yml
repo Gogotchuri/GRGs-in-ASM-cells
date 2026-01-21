@@ -16,10 +16,14 @@ dependencies:
   # Python analysis stack
   - pandas>=2.0
   - numpy>=1.24
-  - matplotlib >= 3.7
+  - scipy>=1.10     # Pearson correlation in comparison
+  - matplotlib>=3.7
+  - scikit-learn
 
   # Alignment
   - star>=2.7.10    # STAR aligner
 
   # Utilities
   - pigz            # parallel gzip compression
+
+  - matplotlib-venn
