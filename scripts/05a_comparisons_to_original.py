@@ -56,7 +56,7 @@ def validate_original_genes(original_genes: pd.DataFrame, new_genes: pd.DataFram
 		"log2FoldChange_original",
 		"log2FoldChange_new",
 		"direction_match"
-	]].sort_values("padj_new")
+	]]
 
 	# Calculate statistics
 	total_original = len(original_genes)
@@ -73,7 +73,7 @@ def validate_original_genes(original_genes: pd.DataFrame, new_genes: pd.DataFram
 	print(f"Not replicated (not found in new results): {not_replicated_count} ({not_replicated_perc:.1f}%)")
 	print(f"Correct direction (same FC sign): {correct_direction_count} ({correct_direction_perc:.1f}%)")
 
-	return merged, not_replicated
+	return merged.sort_values("padj_new"), not_replicated
 
 def main():
 	parser = argparse.ArgumentParser(description="DESeq2 analysis")

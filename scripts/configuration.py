@@ -75,6 +75,10 @@ class AnalysisConfig:
 		return ROOT / "results" / self.reference.name
 
 	@property
+	def general_results_tables_dir(self) -> Path:
+		return ROOT / "results" / "general" / "tables"
+
+	@property
 	def results_tables_dir(self) -> Path:
 		return self.results_dir / "tables"
 
