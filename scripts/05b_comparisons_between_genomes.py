@@ -1,5 +1,3 @@
-from os import mkdir
-
 import pandas as pd
 from configuration import get_config
 
@@ -15,7 +13,6 @@ def load_not_replicated_genes(config) -> pd.DataFrame:
 def left_outer_join(left_df, right_df):
     return left_df[~left_df["gene_name"].isin(right_df["gene_name"])]
 
-# gene_name,padj_original,padj_new,log2FoldChange_original,log2FoldChange_new
 def adjust_validation_columns(df: pd.DataFrame) -> pd.DataFrame:
     return df[["gene_name", "padj_original", "padj_new", "log2FoldChange_original", "log2FoldChange_new"]]
 
