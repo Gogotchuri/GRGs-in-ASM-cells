@@ -1,4 +1,3 @@
-
 import argparse
 import pandas as pd
 from configuration import ROOT, get_config
@@ -10,6 +9,9 @@ def load_original_genes() -> pd.DataFrame:
 
 def load_top_deseq2_results(config) -> pd.DataFrame:
 	return pd.read_csv(config.top_deseq2_results_file)
+
+def load_deseq2_results(config) -> pd.DataFrame:
+	return pd.read_csv(config.deseq2_results_file)
 
 def validate_original_genes(original_genes: pd.DataFrame, new_genes: pd.DataFrame) -> pd.DataFrame:
 	"""
@@ -28,7 +30,7 @@ def validate_original_genes(original_genes: pd.DataFrame, new_genes: pd.DataFram
 
 	# Check if fold change direction matches (same sign)
 	merged["direction_match"] = (
-		(merged["log2FoldChange_original"] * merged["log2FoldChange_new"]) > 0
+			(merged["log2FoldChange_original"] * merged["log2FoldChange_new"]) > 0
 	)
 
 	# Keep only the required columns
@@ -49,12 +51,11 @@ def validate_original_genes(original_genes: pd.DataFrame, new_genes: pd.DataFram
 	validated_perc = (validated_count / total_original) * 100
 	correct_direction_perc = (correct_direction_count / validated_count) * 100 if validated_count > 0 else 0
 
-	print(f"\n=== Validation Statistics ===")
 	print(f"Original genes: {total_original}")
 	print(f"Validated genes (found in new results): {validated_count} ({validated_perc:.1f}%)")
 	print(f"Correct direction (same FC sign): {correct_direction_count} ({correct_direction_perc:.1f}%)")
 
-	return merged
+	return merged.sort_values("padj_new")
 
 def main():
 	parser = argparse.ArgumentParser(description="DESeq2 analysis")
@@ -64,12 +65,19 @@ def main():
 
 	config = get_config(args.part)
 	print(f"=== {config.description} ===\n")
+	config.results_tables_dir.mkdir(parents=True, exist_ok=True) # Just in case
 
 	original_genes = load_original_genes()
 	new_top_genes = load_top_deseq2_results(config)
 
+	print(f"\n=== Validation Statistics (Top Genes from DESeq2) ===")
 	validated_df = validate_original_genes(original_genes, new_top_genes)
-	config.results_tables_dir.mkdir(parents=True, exist_ok=True) # Just in case
+	validated_df.to_csv(config.top_validated_genes_file, index=False)
+	print(f"Validated genes saved to {config.top_validated_genes_file}")
+
+	print(f"\n=== Validation Statistics (From all significant genes) ===")
+	new_all_genes = load_deseq2_results(config)
+	validated_df = validate_original_genes(original_genes, new_all_genes)
 	validated_df.to_csv(config.validated_genes_file, index=False)
 	print(f"Validated genes saved to {config.validated_genes_file}")
 

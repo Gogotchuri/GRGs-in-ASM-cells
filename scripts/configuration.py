@@ -94,6 +94,9 @@ class AnalysisConfig:
 	def validated_genes_file(self) -> Path:
 		return self.results_tables_dir / "validated_genes.csv"
 
+	@property
+	def top_validated_genes_file(self) -> Path:
+		return self.results_tables_dir / "top_validated_genes.csv"
 
 # Analysis configurations
 PART1_CONFIG = AnalysisConfig(
