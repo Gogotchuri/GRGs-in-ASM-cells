@@ -38,11 +38,14 @@ def main():
     top_genes_from_h19_discarded_with_hg38 = adjust_results_columns(left_outer_join(hg19_top_genes, hg38_top_genes))
     # Top genes discovered after analysis with the new genome
     new_genes_with_hg38 = adjust_results_columns(left_outer_join(hg38_top_genes, hg19_top_genes))
+    # Completely new significant genes discovered after analysis with the new genome
+    completely_new_genes_with_hg38 = adjust_results_columns(left_outer_join(new_genes_with_hg38, hg38_validated_genes))
 
     print("Validated genes in hg19 that has been discarded after analysis with hg38:\n", validated_in_hg19_discarded_in_hg38)
     print("\nAdditional genes validated in hg38 that has been discarded initially with hg19:\n", new_validations_with_hg38)
     print("\nTop genes discarded after analysis with hg38:\n", top_genes_from_h19_discarded_with_hg38[:10])
     print("\nTop new genes discovered after analysis with hg38:\n", new_genes_with_hg38[:10])
+    print("\nCompletely new significant genes discovered after analysis with hg38:\n", completely_new_genes_with_hg38[:10])
 
     # Create results directory if it doesn't exist
     results_dir = hg19_config.general_results_tables_dir
@@ -52,9 +55,18 @@ def main():
     validated_in_hg19_discarded_in_hg38.to_csv(results_dir / "validated_in_hg19_discarded_in_hg38.csv", index=False)
     new_validations_with_hg38.to_csv(results_dir / "new_validations_with_hg38.csv", index=False)
     top_genes_from_h19_discarded_with_hg38.to_csv(results_dir / "top_genes_from_h19_discarded_with_hg38.csv", index=False)
-    new_genes_with_hg38.to_csv(results_dir / "new_genes_with_hg38.csv", index=False)
+    new_genes_with_hg38.to_csv(results_dir / "new_genes_with_hg38_from_h19.csv", index=False)
+    completely_new_genes_with_hg38.to_csv(results_dir / "completely_new_genes_with_hg38.csv", index=False)
 
     print("Results written to:", results_dir)
+
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
     main()
