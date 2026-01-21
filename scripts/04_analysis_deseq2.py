@@ -1,11 +1,10 @@
-import argparse
 import pandas as pd
 from pydeseq2.dds import DeseqDataSet
 from pydeseq2.ds import DeseqStats
 
-from configuration import get_config, ROOT
+from configuration import CONFIG_DIR
+from utilities import get_config_based_on_args
 
-CONFIG_DIR = ROOT / "config"
 MIN_GENE_COUNTS = 10
 
 def load_counts(config) -> tuple[pd.DataFrame, pd.DataFrame, pd.Series]:
@@ -42,7 +41,8 @@ def run_deseq2(counts: pd.DataFrame, samples: pd.DataFrame) -> tuple[pd.DataFram
 	dds = DeseqDataSet(
 		counts=counts_T,
 		metadata=samples,
-		design="~ condition", # We don't need to further specify the cell line in this case
+		# I have opted to not include cell line in the design
+		design="~ condition",
 		refit_cooks=True,
 		n_cpus=8
 	)
@@ -71,7 +71,6 @@ def summarize_results(results: pd.DataFrame) -> dict:
 	"""Generate summary statistics."""
 	total = len(results)
 	sig_05 = (results["padj"] < 0.05).sum()
-	sig_01 = (results["padj"] < 0.01).sum()
 	sig_strict = ((results["padj"] < 0.05) & (abs(results["log2FoldChange"]) > 1)).sum()
 	up = ((results["padj"] < 0.05) & (results["log2FoldChange"] > 1)).sum()
 	down = ((results["padj"] < 0.05) & (results["log2FoldChange"] < -1)).sum()
@@ -85,13 +84,7 @@ def summarize_results(results: pd.DataFrame) -> dict:
 
 
 def main():
-	parser = argparse.ArgumentParser(description="DESeq2 analysis")
-	parser.add_argument("--part", type=int, required=True, choices=[1, 2],
-						help="Analysis part: 1=hg19, 2=hg38")
-	args = parser.parse_args()
-
-	config = get_config(args.part)
-	print(f"=== {config.description} ===\n")
+	config = get_config_based_on_args("DESeq2 analysis")
 
 	# Create output directory
 	config.results_tables_dir.mkdir(parents=True, exist_ok=True)

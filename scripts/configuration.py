@@ -14,6 +14,8 @@ from dataclasses import dataclass
 import subprocess
 
 ROOT = Path(__file__).parent.parent
+CONFIG_DIR = ROOT / "config"
+DATA_DIR = ROOT / "data"
 
 @dataclass
 class ReferenceConfig:
@@ -127,13 +129,6 @@ def get_config(part: int) -> AnalysisConfig:
 	else:
 		raise ValueError(f"Invalid part: {part}. Must be 1 or 2.")
 
-def decompress_if_needed(gz_file: Path) -> Path:
-	"""Decompress .gz file if uncompressed version doesn't exist yet."""
-	uncompressed = gz_file.with_suffix("")
-	if not uncompressed.exists() and gz_file.exists():
-		print(f"Decompressing {gz_file.name}...")
-		subprocess.run(["gunzip", "-k", str(gz_file)], check=True)
-	return uncompressed
 
 # Pipeline parameters
 STAR_PARAMS = {

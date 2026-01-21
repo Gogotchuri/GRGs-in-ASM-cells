@@ -6,14 +6,11 @@ Download FASTQ files from SRA and reference genomes.
 import subprocess
 import pandas as pd
 
-from configuration import HG19_CONFIG, HG38_CONFIG, ROOT
-
-CONFIG = ROOT / "config"
-
+from configuration import HG19_CONFIG, HG38_CONFIG, CONFIG_DIR, DATA_DIR
 
 def download_sra(srr_id: str) -> None:
     """Download and convert SRA to FASTQ using fasterq-dump (sra-tools)."""
-    outdir = ROOT / "data" / "raw"
+    outdir = DATA_DIR / "raw"
     outdir.mkdir(parents=True, exist_ok=True)
 
     fq1 = outdir / f"{srr_id}_1.fastq.gz"
@@ -51,7 +48,7 @@ def download_reference(config) -> None:
 
 def main():
     print("=== Downloading FASTQ files (based on samples_table.tsv) ===")
-    samples = pd.read_csv(CONFIG / "samples_table.tsv", sep="\t")
+    samples = pd.read_csv(CONFIG_DIR / "samples_table.tsv", sep="\t")
     for _, row in samples.iterrows():
         download_sra(row["srr_id"])
 

@@ -1,9 +1,7 @@
 
-import argparse
 import pandas as pd
-from configuration import ROOT, get_config
-
-CONFIG_DIR = ROOT / "config"
+from configuration import CONFIG_DIR
+from utilities import get_config_based_on_args
 
 def load_original_genes() -> pd.DataFrame:
 	return pd.read_csv(CONFIG_DIR / "modified_original_genes.tsv", sep="\t")
@@ -76,13 +74,8 @@ def validate_original_genes(original_genes: pd.DataFrame, new_genes: pd.DataFram
 	return merged.sort_values("padj_new"), not_replicated
 
 def main():
-	parser = argparse.ArgumentParser(description="DESeq2 analysis")
-	parser.add_argument("--part", type=int, required=True, choices=[1, 2],
-						help="Analysis part: 1=hg19, 2=hg38")
-	args = parser.parse_args()
+	config = get_config_based_on_args("Comparisons to original")
 
-	config = get_config(args.part)
-	print(f"=== {config.description} ===\n")
 	config.results_tables_dir.mkdir(parents=True, exist_ok=True) # Just in case
 
 	original_genes = load_original_genes()

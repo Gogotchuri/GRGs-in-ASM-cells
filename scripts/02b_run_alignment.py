@@ -1,11 +1,10 @@
 import subprocess
-import argparse
 from pathlib import Path
 import pandas as pd
-from configuration import get_config, STAR_PARAMS, ROOT, AnalysisConfig
+from configuration import STAR_PARAMS, AnalysisConfig, CONFIG_DIR, DATA_DIR
+from utilities import get_config_based_on_args
 
-DATA_RAW = ROOT / "data" / "raw"
-CONFIG_DIR = ROOT / "config"
+DATA_RAW = DATA_DIR / "raw"
 
 def align_sample(srr_id: str, sample_id: str, config: AnalysisConfig) -> Path:
 	"""
@@ -44,42 +43,54 @@ def align_sample(srr_id: str, sample_id: str, config: AnalysisConfig) -> Path:
 
 	return bam_out
 
+def parse_star_log(log_file: Path) -> dict:
+	"""
+	Parse STAR Log.final.out file.
+	Returns columns:
+	 ['sample_id', 'input_reads', 'uniquely_mapped', 'uniquely_mapped_pct', 'splice_junctions',
+	  'multi_mapped_pct', 'total_mapped_pct', 'junction_pct']
+	"""
+	sample_id = log_file.name.replace(".Log.final.out", "")
+	with open(log_file) as f:
+		content = f.read()
+
+	# Line pattern: <Metric Name> | <Value>
+	def extract_value(line_n):
+		# Read nth line
+		line = content.split('\n')[line_n-1]
+		# Extract value
+		value_str = line.split('|')[1].strip().replace('%', '')
+		if '.' in value_str:
+			return float(value_str)
+		else:
+			return int(value_str)
+
+	stats = {
+		'sample_id': sample_id,
+		'input_reads': extract_value(6),
+		'uniquely_mapped': extract_value(9),
+		'uniquely_mapped_pct': extract_value(10),
+		'splice_junctions': extract_value(12),
+		'multi_mapped_pct': extract_value(25),
+	}
+
+	stats['total_mapped_pct'] = stats['uniquely_mapped_pct'] + stats['multi_mapped_pct']
+	stats['junction_pct'] = (stats['splice_junctions'] / stats['uniquely_mapped']) * 100
+
+	return stats
+
 
 def collect_alignment_stats(config) -> pd.DataFrame:
 	"""Collect alignment statistics from STAR logs."""
 	stats = []
 	for log_file in config.bam_dir.glob("*.Log.final.out"):
-		sample_id = log_file.name.replace(".Log.final.out", "")
-		with open(log_file) as f:
-			content = f.read()
-
-		# Parse key metrics
-		for line in content.split("\n"):
-			if "Number of input reads" in line:
-				input_reads = int(line.split("|")[1].strip())
-			elif "Uniquely mapped reads %" in line:
-				unique_pct = float(line.split("|")[1].strip().replace("%", ""))
-			elif "% of reads mapped to multiple loci" in line:
-				multi_pct = float(line.split("|")[1].strip().replace("%", ""))
-
-		stats.append({
-			"sample_id": sample_id,
-			"input_reads": input_reads,
-			"unique_mapped_pct": unique_pct,
-			"multi_mapped_pct": multi_pct,
-			"total_mapped_pct": unique_pct + multi_pct
-		})
+		stats.append(parse_star_log(log_file))
 
 	return pd.DataFrame(stats)
 
 
 def main():
-	parser = argparse.ArgumentParser(description="STAR alignment")
-	parser.add_argument("--part", type=int, required=True, choices=[1, 2],
-						help="Analysis part, alignment with genome STAR index: 1=hg19, 2=hg38")
-	args = parser.parse_args()
-
-	config = get_config(args.part)
+	config = get_config_based_on_args("STAR alignment")
 
 	# Align samples
 	print("\nAligning samples...")

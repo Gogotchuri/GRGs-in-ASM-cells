@@ -6,9 +6,8 @@ Usage:
     python 02_b_build_star_index.py --part 2 // For hg38
 """
 
-from pathlib import Path
-import argparse
-from configuration import get_config, STAR_PARAMS, decompress_if_needed
+from configuration import STAR_PARAMS
+from utilities import decompress_if_needed, get_config_based_on_args
 import subprocess
 
 def build_star_index(config) -> None:
@@ -39,14 +38,7 @@ def build_star_index(config) -> None:
 	print(f"STAR index built: {star_index}")
 
 def main():
-	parser = argparse.ArgumentParser(description="STAR index builder")
-	parser.add_argument("--part", type=int, required=True, choices=[1, 2],
-						help="For analysis part: 1=hg19, 2=hg38")
-	args = parser.parse_args()
-
-	config = get_config(args.part)
-	print(f"{config.description}\n")
-
+	config = get_config_based_on_args("STAR index building")
 	# Build index
 	build_star_index(config)
 

@@ -6,8 +6,7 @@ Since the deseq2 uses log2 this makes the comparison between our results and the
 
 import pandas as pd
 import numpy as np
-from configuration import ROOT
-CONFIG_DIR = ROOT / "config"
+from configuration import CONFIG_DIR
 
 def add_log2_change(df: pd.DataFrame) -> pd.DataFrame:
 	""" Convert Ln[Fold Change] to log2"""
