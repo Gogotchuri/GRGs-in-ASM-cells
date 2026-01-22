@@ -36,16 +36,12 @@ def collect_stats(config: AnalysisConfig) -> pd.DataFrame:
 	star_stats = pd.read_csv(stats_file, sep="\t").set_index('sample_id')
 	# Add featureCounts stats if available
 	fc_df = parse_featurecounts_summary(config.counts_dir / "gene_counts.txt.summary")
-	print("ASDASDASD")
-	print(fc_df)
 	return star_stats.join(fc_df)
 
 def main():
 	config = get_config_based_on_args("General stat collection")
 	df = collect_stats(config)
-	print(df)
 	st = generate_summary_table(df)
-	print(st)
 	st.to_csv(config.results_tables_dir / "general_stats_summary.tsv", sep="\t", index=False)
 
 def generate_summary_table(df: pd.DataFrame) -> pd.DataFrame:
