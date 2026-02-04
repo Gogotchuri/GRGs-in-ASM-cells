@@ -1,5 +1,7 @@
 # Glucocorticoid-Responsive Genes in Airway Smooth Muscle Cells: A Comparison of Modern and the Original RNA-seq Pipelines
 
+[Latex Rendered Version](LatexRender.pdf) - Generated using [Overleaf](https://www.overleaf.com/) and edited for grammar using Grammarly.
+
 *This is a replication study of the 2014 original paper [RNA-Seq Transcriptome Profiling Identifies CRISPLD2 as a Glucocorticoid Responsive Gene that Modulates Cytokine Function in Airway Smooth Muscle Cells (by Blanca E. Himes and Xiaofeng Jiang )](https://doi.org/10.1371/journal.pone.0099625)*
 
 *I am not a biologist, and I know I will have trouble with the biological interpretation of the results. I will perform statistical analysis and interpret the results from the statistical perspective.*
