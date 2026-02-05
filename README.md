@@ -1,4 +1,4 @@
-# Glucocorticoid-Responsive Genes in Airway Smooth Muscle Cells: A Comparison of Modern and the Original RNA-seq Pipelines
+# Glucocorticoid-Responsive Genes Modulating Cytokine Function in Airway Smooth Muscle Cells: A Comparison of Modern and the Original RNA-seq Pipelines
 
 [Latex Rendered Version](LatexRender.pdf) - Generated using [Overleaf](https://www.overleaf.com/) and edited for grammar using Grammarly.
 
